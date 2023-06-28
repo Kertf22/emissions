@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import BaseChart from "./charts/TotalByCountry"
 import api from "./services/api"
 import ByStartYearAndCountry from "./charts/ByStartYearAndCountry"
@@ -5,38 +7,6 @@ import {useState, useEffect} from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import _ from "lodash";
 import { Button } from "react-bootstrap";
-
-
-
-const TotalByCountryDataExample = [
-  {
-    "country": "Afghanistan",
-    "total": 0.4
-  },
-  {
-    "country": "Albania",
-    "total": 0.8
-  },
-  {
-    "country": "Algeria",
-    "total": 3.5
-  }
-]
-
-const EmissionsByStartYearAndCountryDataExample = [
-  {
-    "country": "Afghanistan",
-    "coal": 2.0,
-    "oil": 20,
-    "gas": 10,
-    "flaring": 9,
-    "cement": 8,
-    "other": 7,
-    "total": 1.5,
-    "year": 2020
-  }
-] 
-
 
 function App() {
 
@@ -46,14 +16,16 @@ function App() {
 
   const [selectedCountry, setSelectedCountry] = useState('' as any)
   const [selectedYear, setSelectedYear] = useState('' as any)
-  const [selectedFont, setSelectedFont] = useState('' as any)
-  const [selectedAmountFonts, setSelectedAmountFonts] = useState('' as any)
-  const [selectedAmountCountries, setSelectedAmountCountries] = useState('' as any)
+  // const [selectedFont, setSelectedFont] = useState('' as any)
+  const [
+    // selectedAmountFonts, 
+    ,setSelectedAmountFonts] = useState('' as any)
+  const [
+    // selectedAmountCountries, 
+    ,setSelectedAmountCountries] = useState('' as any)
 
   const availableYears = _.range(2021,1749,-1);
   const totalFonts = _.range(1,7);
-
-
 
   useEffect(() => {
     api.get('/country').then((response) => {
@@ -62,6 +34,7 @@ function App() {
     })
 
   },[])
+
 
   return (
     <>
@@ -164,7 +137,7 @@ function App() {
       >
         <option>Selecione a quantidade</option>
         {
-          countries.map((country: any, index: number) => {
+          countries.map((_country: any, index: number) => {
             return <option  value={index+1}>{index+1}</option>
           })
         }
@@ -181,7 +154,7 @@ function App() {
       }}>
         <option>Selecione a quantidade</option>
         {
-          countries.map((country: any, index: number) => {
+          countries.map((_country: any, index: number) => {
             return <option  value={index+1}>{index+1}</option>
           })
         }

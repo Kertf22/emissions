@@ -8,19 +8,13 @@ import {
   Bar,
 } from "recharts";
 
-
 import TotalEmissionsByCountry from "../types/TotalEmissionsByCountry";
-
 
 interface TotalByCountryProps {
   data: TotalEmissionsByCountry;
-};
-
-
+}
 
 const TotalByCountry = ({data}: TotalByCountryProps) => {
-
-
 
   const mapped = data.map((item) => {
     return {
