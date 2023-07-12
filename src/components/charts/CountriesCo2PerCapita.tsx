@@ -10,14 +10,18 @@ import {
 } from "recharts";
 import { useRef } from "react";
 interface EmissionsByStartYearAndCountryProps {
-  data: EmissionsByStartYearAndCountry;
+  data: {
+    country: string;
+    per_capita: number;
+    total: number;
+  }[];
 }
 
-const ByStartYearAndCountry = ({
+const CountriesCo2PerCapita = ({
   data,
 }: EmissionsByStartYearAndCountryProps) => {
   const mapped = data.map((item) => {
-    return { name: item.country, ...item };
+    return { name: item.country, per_capita: item.per_capita };
   });
 
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
@@ -33,14 +37,9 @@ const ByStartYearAndCountry = ({
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey="coal" fill="#82ca9d" />
-      <Bar dataKey="oil" fill="#d5f51f" />
-      <Bar dataKey="gas" fill="#f21010" />
-      <Bar dataKey="flaring" fill="#82ca9d" />
-      <Bar dataKey="cement" fill="#82ca9d" />
-      <Bar dataKey="other" fill="#82ca9d" />
+      <Bar dataKey="per_capita" fill="#850000" />
     </BarChart>
   );
 };
 
-export default ByStartYearAndCountry;
+export default CountriesCo2PerCapita;
