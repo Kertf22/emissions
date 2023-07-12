@@ -27,7 +27,8 @@ import { Q3 } from "./components/charts/Q3";
 import { getAverageEmissionsByCountryAndYear } from "./actions/getAverageEmissionsByCountryAndYear";
 import { Q8 } from "./components/charts/Q8";
 import { Q9 } from "./components/charts/Q9";
-
+import co2 from "./assets/bg.webp"
+import { MdOutlineCo2 } from "react-icons/md"
 function App() {
   const [chart, setChart] = useState("total-by-country");
 
@@ -188,9 +189,9 @@ function App() {
   const handleQ8 = async () => {
     setLoading(true);
     try {
-      const data = await getAverageEmissionsByCountryAndYear(q8Form.country, Number(q8Form.year));
+      const data = await getAverageEmissionsByCountryAndYear(q8Form.country, 2023 - Number( q8Form.year));
 
-      if (data.length === 0) { throw new Error("error") }
+      if (data.length === 0 || data[0].media_emissao === 0) { throw new Error("error") }
       setData({
         media_emissao: data[0].media_emissao,
         country: q8Form.country
@@ -218,12 +219,23 @@ function App() {
     }
     setLoading(false);
   }
-
   return (
     <>
-      <div className="w-full h-full flex flex-col items-center justify-center py-24">
+      <img src={co2}
+        style={{
+          position: "fixed",
+          zIndex: -1,
+          opacity: 0.9,
+        }}
+      />
+      <div
 
-        <p className="text-3xl font-bold">Emissões de CO2</p>
+        className="w-full h-full flex flex-col items-center justify-center py-24">
+        <div>
+
+        </div>
+        <p className="text-3xl font-bold"><MdOutlineCo2 size="100" /></p>
+
 
         <div className="w-full  items-center  p-12 gap-10 flex flex-wrap h-full">
           <Card>

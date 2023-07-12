@@ -9,7 +9,7 @@ const Spinner = ({ show }: SpinnerProps) => {
         show &&
         <Backdrop onClick={() => null}>
             <div className="text-center loading">
-                <div className="spinner-border text-indigo-300" role="status">
+                <div className="spinner-border text-gray-300" role="status">
                 </div>
             </div>
         </Backdrop>
