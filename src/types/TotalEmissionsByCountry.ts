@@ -1,6 +1,6 @@
-type TotalEmissionsByCountry = {
-    total: number,
-    country: string
-}[]
+// type TotalEmissionsByCountry = {
+//     total: number,
+//     country: string
+// }[]
 
-export default TotalEmissionsByCountry;
+// export default TotalEmissionsByCountry;

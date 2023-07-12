@@ -11,7 +11,7 @@ interface CountrybyYear {
   year:number;
 }
 
-export const getCountrybyYear = async (country:string,year:string) => {
+export const getCountrybyYear = async (country:string,year:number) => {
   const { data } = await api.get<CountrybyYear[]>(`/country/${country}/${year}`);
   return data;
 };

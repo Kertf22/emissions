@@ -1,5 +1,5 @@
 import React from "react";
-import { ForwardRefComponent, HTMLMotionProps, motion } from "framer-motion";
+import { motion } from "framer-motion";
 // import { X } from "@phosphor-icons/react";
 interface BackdropProps{
   children: React.ReactNode;

@@ -1,18 +1,18 @@
+import { Backdrop } from "../modal";
 
 type SpinnerProps = {
     show: boolean;
 }
 
-const Spinner = ({show}: SpinnerProps) => {
+const Spinner = ({ show }: SpinnerProps) => {
     return (
         show &&
-        <div id="backdrop">
-        <div className="text-center loading">
-            <div className="spinner-border" role="status">
-                
+        <Backdrop onClick={() => null}>
+            <div className="text-center loading">
+                <div className="spinner-border text-indigo-300" role="status">
+                </div>
             </div>
-        </div>
-      </div>
+        </Backdrop>
     )
 }
 

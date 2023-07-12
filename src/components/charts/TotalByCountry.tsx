@@ -8,7 +8,6 @@ import {
   Bar,
 } from "recharts";
 import { useRef } from "react";
-import TotalEmissionsByCountry from "../../types/TotalEmissionsByCountry";
 
 interface TotalByCountryProps {
   data: {

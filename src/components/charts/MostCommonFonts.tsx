@@ -28,7 +28,6 @@ export const MostCommonFonts = ({ data, quant }: MostCommonFontsProps) => {
       return { name: key, [key]: value };
     })
     .slice(0, quant);
-    console.log(MostCommonFonts)
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
   return (
     <BarChart
@@ -43,8 +42,8 @@ export const MostCommonFonts = ({ data, quant }: MostCommonFontsProps) => {
       <Tooltip />
       <Legend />
 
-      {mapped.map((item, i) => {
-        return <Bar dataKey={item.name} fill={generateRandomColor()} />;
+      {mapped.map((item) => {
+        return <Bar key={item.name} dataKey={item.name} fill={generateRandomColor()} />;
       })}
     </BarChart>
   );
