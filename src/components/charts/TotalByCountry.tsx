@@ -8,7 +8,7 @@ import {
   Bar,
 } from "recharts";
 
-import TotalEmissionsByCountry from "../types/TotalEmissionsByCountry";
+import TotalEmissionsByCountry from "../../types/TotalEmissionsByCountry";
 
 interface TotalByCountryProps {
   data: TotalEmissionsByCountry;

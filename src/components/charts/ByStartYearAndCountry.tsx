@@ -1,4 +1,4 @@
-import EmissionsByStartYearAndCountry from "../types/EmissionsByStartYearAndCountry"
+import EmissionsByStartYearAndCountry from "../../types/EmissionsByStartYearAndCountry"
 import {
     BarChart,
     CartesianGrid,
