@@ -1,14 +1,16 @@
 import { User } from "./App"
 import { Button } from "./components/button"
 import { useState } from "react"
+import api from "./services/api";
 
 export interface LoginProps {
     setLoading: (state:boolean) => void;
     loading:boolean;
     onComplete: (user: User) => void 
+    close: () => void;
 }
 
-export const Login = ({ onComplete }: LoginProps ) => {
+export const Login = ({ onComplete, setLoading, close }: LoginProps ) => {
 
     const [form, setForm] = useState({
         username: '',
@@ -29,14 +31,23 @@ export const Login = ({ onComplete }: LoginProps ) => {
         return isValid
     }
 
-    const onLogin = () => {
+    const onLogin = async () => {
         if (!validateForm()) {
             setError("Preencha todos os campos do formulario.");
             return;
         }
 
+        close();
+        setLoading(true)
 
-        // onComplete()
+        const response = await api.post("/login", form)
+
+        onComplete(response.data.user)
+
+        setLoading(false)
+
+    
+
     }
 
     return (

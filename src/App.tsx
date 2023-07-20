@@ -84,8 +84,8 @@ function App() {
         modal && (
           <Modal open={!!modal} closeModal={handleClose}>
 
-            {modal === "login" && <Login onComplete={setUser} setLoading={setLoading} loading={loading} />}
-            {modal === "register" && <Register onComplete={setUser} setLoading={setLoading} loading={loading} />}
+            {modal === "login" && <Login onComplete={setUser} setLoading={setLoading} loading={loading} close={handleClose} />}
+            {modal === "register" && <Register onComplete={setUser} setLoading={setLoading} loading={loading} close={handleClose} />}
 
           </Modal>)
       }

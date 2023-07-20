@@ -1,9 +1,10 @@
 import { LoginProps } from "./Login";
 import { Button } from "./components/button"
 import { useState } from "react"
+import api from "./services/api";
 
 
-export const Register = ({ onComplete, setLoading, loading }: LoginProps) => {
+export const Register = ({ onComplete, setLoading, loading, close }: LoginProps) => {
 
     const [form, setForm] = useState({
         username: '',
@@ -24,15 +25,21 @@ export const Register = ({ onComplete, setLoading, loading }: LoginProps) => {
         return isValid
     }
 
-    const onRegister = () => {
+    const onRegister = async () => {
         if (!validateForm()) {
             setError("Preencha todos os campos do formulario.");
             return;
         }
 
 
-        //setLoading
-        // onComplete()
+        close();
+
+        setLoading(true);
+
+        const response = await api.post("/register", form)
+        onComplete(response.data.user)
+
+        setLoading(false);
     }
 
     return (
