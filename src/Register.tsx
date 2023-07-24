@@ -1,10 +1,13 @@
 import { LoginProps } from "./Login";
 import { Button } from "./components/button"
 import { useState } from "react"
-import api from "./services/api";
+import api from "./infra/services/api";
+import useGlobalStore from "./infra/store";
+import { User } from "./App";
 
 
-export const Register = ({ onComplete, setLoading, loading, close }: LoginProps) => {
+export const Register = ({ onComplete, close }: LoginProps) => {
+    const { setLoading } = useGlobalStore();
 
     const [form, setForm] = useState({
         username: '',
@@ -31,13 +34,17 @@ export const Register = ({ onComplete, setLoading, loading, close }: LoginProps)
             return;
         }
 
-
         close();
-
         setLoading(true);
+        try {
+            const { data } = await api.post<{ user: User }>("/register", form)
+            const { data: { token } } = await api.post<{ user: User, token: string }>("/login", form);
+            onComplete(data.user, token);
+            close();
 
-        const response = await api.post("/register", form)
-        onComplete(response.data.user)
+        } catch (err) {
+            setError("Erro ao logar, tente novamente mais tarde.");
+        }
 
         setLoading(false);
     }

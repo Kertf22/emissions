@@ -21,7 +21,6 @@ interface TotalByCountryProps {
 }
 
 const TotalByCountry = ({ data }: TotalByCountryProps) => {
-  console.log(data);
   const mapped = data.map((item) => {
     return {
       name: item.country,

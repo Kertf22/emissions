@@ -8,7 +8,7 @@ import {
   Legend,
   Bar,
 } from "recharts";
-import { generateRandomColor } from "../../services/generateColor";
+import { generateRandomColor } from "../../infra/services/generateColor";
 
 interface MostCommonFontsProps {
   data: {
@@ -18,6 +18,7 @@ interface MostCommonFontsProps {
     cement: number;
     oil: number;
     total: number;
+    
   };
   quant: number;
 }

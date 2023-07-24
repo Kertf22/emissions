@@ -8,7 +8,7 @@ import {
     Legend,
     Bar,
 } from "recharts";
-import { generateRandomColor } from "../../services/generateColor";
+import { generateRandomColor } from "../../infra/services/generateColor";
 interface Data {
     country: string;
     coal: number;

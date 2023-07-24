@@ -1,23 +1,28 @@
-import { getCountries } from "../actions/getCountries";
-import { Country } from "../types/country";
-import { useState, useEffect } from "react";
+import { User } from "../App";
+import { getCountries } from "../infra/actions/getCountries";
+import useGlobalStore from "../infra/store";
+import {  useEffect } from "react";
 
 // interface useCountriesProps {
 //   setLoading: (state: boolean) => void;
 // }
 
-export const useCountries = (setLoading:(state: boolean) => void) => {
-  const [countries, setCountries] = useState<{ country: Country }[]>([]);
+export const useCountries = (user:User) => {
+
+  const { setCountries, setLoading } = useGlobalStore();
 
   const fetch = async () => {
+    setLoading(true);
     const data = await getCountries();
     setCountries(data);
     setLoading(false);
   };
 
   useEffect(() => {
-    fetch();
-  }, []);
-
-  return { countries, fetch };
+    if(user) {
+      fetch();
+    }else{
+      setCountries([]);
+    }
+  }, [user]);
 };
