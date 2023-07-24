@@ -24,7 +24,6 @@ import { Q6 } from "./components/charts/Q6";
 import { Q7 } from "./components/charts/Q7";
 import { Q8 } from "./components/charts/Q8";
 import { Q9 } from "./components/charts/Q9";
-import { useCountries } from "./hooks/useCountries";
 
 export interface User {
   id: string;
