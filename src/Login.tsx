@@ -5,7 +5,7 @@ import api from "./infra/services/api";
 import useGlobalStore from "./infra/store";
 
 export interface LoginProps {
-    onComplete: (user: User, token:string) => void
+    onComplete: (user: User, token: string) => void
     close: () => void;
 }
 
@@ -61,7 +61,7 @@ export const Login = ({ onComplete, close }: LoginProps) => {
                 </div>
                 <div className="flex flex-col gap-2 ">
                     <label>Senha</label>
-                    <input className="bg-gray-300 rounded-md p-2" name="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+                    <input className="bg-gray-300 rounded-md p-2" type="password" name="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
                 </div>
 
                 {error && <p className="text-red-700 text-sm ">
