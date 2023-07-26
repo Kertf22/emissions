@@ -1,16 +1,12 @@
-import { User } from "./App"
-import { Button } from "./components/button"
+import { LoginProps } from "./Login";
+import { Button } from "./button"
 import { useState } from "react"
-import api from "./infra/services/api";
-import useGlobalStore from "./infra/store";
+import api from "../infra/services/api";
+import useGlobalStore from "../infra/store";
+import { User } from "../App";
 
-export interface LoginProps {
-    onComplete: (user: User, token: string) => void
-    close: () => void;
-}
 
-export const Login = ({ onComplete, close }: LoginProps) => {
-
+export const Register = ({ onComplete, close }: LoginProps) => {
     const { setLoading } = useGlobalStore();
 
     const [form, setForm] = useState({
@@ -31,30 +27,34 @@ export const Login = ({ onComplete, close }: LoginProps) => {
 
         return isValid
     }
-    const signIn = async () => {
+
+    const onRegister = async () => {
         if (!validateForm()) {
             setError("Preencha todos os campos do formulario.");
             return;
         }
 
+        close();
         setLoading(true);
         try {
-            const { data } = await api.post<{ user: User, token: string }>("/login", form);
-            onComplete(data.user, data.token);
+            const { data } = await api.post<{ user: User }>("/register", form)
+            const { data: { token } } = await api.post<{ user: User, token: string }>("/login", form);
+            onComplete(data.user, token);
             close();
 
         } catch (err) {
             setError("Erro ao logar, tente novamente mais tarde.");
         }
 
-        setLoading(false)
-    };
-
+        setLoading(false);
+    }
 
     return (
         <>
-            <h1 className="text-xl text-gray-700 font-bold mb-4">Login</h1>
-            <div className="flex flex-col gap-6 p-2">
+
+            <h1 className="text-xl text-gray-700 font-bold mb-4">Cadastro</h1>
+            <div className="flex flex-col gap-6">
+
                 <div className="flex flex-col gap-2 ">
                     <label>Username</label>
                     <input className="bg-gray-300 rounded-md p-2" value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} />
@@ -67,10 +67,11 @@ export const Login = ({ onComplete, close }: LoginProps) => {
                 {error && <p className="text-red-700 text-sm ">
                     {error}
                 </p>}
-                <Button onClick={signIn}>
-                    Entre
+                <Button onClick={onRegister}>
+                    Cadastre-se
                 </Button>
             </div>
         </>
+
     )
 }

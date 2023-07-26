@@ -1,13 +1,13 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Spinner from "./components/spinner";
 import "./App.css";
 import co2 from "./assets/bg.webp"
 import { MdOutlineCo2 } from "react-icons/md";
 import { Questions } from "./Questions";
-import { Login } from "./Login";
+import { Login } from "./components/Login";
 import { Modal } from "./components/modal";
-import { Register } from "./Register";
+import { Register } from "./components/Register";
 import useGlobalStore from "./infra/store";
 import { useUser } from "./hooks/useUser";
 import Header from "./Header";
@@ -40,39 +40,18 @@ const containerStyle = {
 
 function App() {
 
-  const {loading, data, setData } = useGlobalStore();
+  const { loading, data, setData } = useGlobalStore();
 
   const handleClose = () => setData(null)
 
   const { signIn, logOut } = useUser();
-
-  const { location } = useLocation();
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyAdAmN4FLzLuxVoKk-isILdI2OTb6sn07E",
   });
 
-  const [_, setMap] = useState(null);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onLoad = useCallback(function callback(map: any) {
-    new window.google.maps.LatLngBounds();
-      new window.google.maps.Marker({
-        position: { lat: +location?.coords.latitude, lng: +location?.coords.longitude },
-        map,
-        label: {
-          text: "Você está aqui!",
-          fontSize: "24px",
-        },
-        title: 'Você está aqui!'
-      });
-    setMap(map);
-  }, [location]);
-
-  const onUnmount = useCallback(function callback() {
-    setMap(null);
-  }, []);
+  useLocation(isLoaded);
 
   return (
     <>
@@ -94,24 +73,7 @@ function App() {
 
         <Questions />
 
-        {isLoaded && location ? (
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={{
-              lat: +location?.coords.latitude,
-              lng: +location?.coords.longitude
-            }}
-            zoom={16}
-            
-            onLoad={onLoad}
-            onUnmount={onUnmount}
-          >
-            {/* Child components, such as markers, info windows, etc. */}
-            <></>
-          </GoogleMap>
-        ) : (
-          <></>
-        )}
+
       </div>
       {
         data && (
