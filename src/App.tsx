@@ -24,6 +24,8 @@ import { Q6 } from "./components/charts/Q6";
 import { Q7 } from "./components/charts/Q7";
 import { Q8 } from "./components/charts/Q8";
 import { Q9 } from "./components/charts/Q9";
+import { Table } from "react-bootstrap";
+import { getLocations } from "./infra/actions/getLocations";
 
 export interface User {
   id: string;
@@ -40,7 +42,18 @@ const containerStyle = {
 
 function App() {
 
-  const { loading, data, setData } = useGlobalStore();
+  const { loading, data, setData, locations, setLocations } = useGlobalStore();
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+    const locations = await getLocations();
+    setLocations(locations)
+  }
+  fetchData();
+  },[])
+  
+
 
   const handleClose = () => setData(null)
 
@@ -73,7 +86,32 @@ function App() {
 
         <Questions />
 
+        <p className="text-3xl font-bold">
+          Acessos ao portal
+        </p>
 
+        <Table striped bordered hover variant="dark" style={{ width: "80%" }}>
+          <thead>
+            <tr>
+              <th>País</th>
+              <th>Estado</th>
+              <th>Cidade</th>
+              <th>Acessos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {locations.map((location) => {
+              return (
+                <tr key={location.id}>
+                  <td>{location.country}</td>
+                  <td>{location.state}</td>
+                  <td>{location.city}</td>
+                  <td>{location._count.city}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
       </div>
       {
         data && (
