@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Spinner from "./components/spinner";
 import "./App.css";
@@ -11,7 +11,7 @@ import { Register } from "./components/Register";
 import useGlobalStore from "./infra/store";
 import { useUser } from "./hooks/useUser";
 import Header from "./Header";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 import useLocation from "./hooks/useLocation";
 import { Button } from "./components/button";
 import { WarningCircle } from "@phosphor-icons/react";
@@ -32,13 +32,13 @@ export interface User {
   username: string;
 }
 
-const containerStyle = {
-  width: "600px",
-  height: "400px",
-  marginTop: "30px",
-  border: "2px solid black",
-  borderRadius: "12px"
-};
+// const containerStyle = {
+//   width: "600px",
+//   height: "400px",
+//   marginTop: "30px",
+//   border: "2px solid black",
+//   borderRadius: "12px"
+// };
 
 function App() {
 

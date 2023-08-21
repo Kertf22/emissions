@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
-import codegrid from "codegrid-js";
+import { useEffect } from "react";
 import api from "../infra/services/api";
 
-interface Location {
-  lat: number;
-  long: number;
-  timestamp: number;
-}
+// interface Location {
+//   lat: number;
+//   long: number;
+//   timestamp: number;
+// }
 
 function getLocation(lat: number, lng: number) {
   const latlng = new google.maps.LatLng(lat, lng);
