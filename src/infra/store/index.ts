@@ -15,6 +15,11 @@ interface Location {
   country :string
   city :string
   state :string
+  _count:{
+    city: number
+    country: number
+    state: number
+  }
 }
 interface GlobalStore {
   user: null | User;
