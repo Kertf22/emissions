@@ -4,7 +4,6 @@ import { User } from "../App";
 import api from "../infra/services/api";
 import { getCountries } from "../infra/actions/getCountries";
 import decode from "jwt-decode";
-import { X } from "@phosphor-icons/react";
 export const useUser = () => {
 
     const fetchCountries = async () => {
