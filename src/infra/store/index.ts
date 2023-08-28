@@ -7,10 +7,18 @@ interface Data {
   type: string | "error" | "login" | "register";
 }
 
+interface Location {
+  id: number
+  lat: number
+  long: number
+  timestamp: number
+  country :string
+  city :string
+  state :string
+}
 interface GlobalStore {
   user: null | User;
   setUser: (user: User) => void;
-  locations: any[];
 
   countries: {
     country: string;
@@ -28,7 +36,8 @@ interface GlobalStore {
   setData: (data: Data) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  setLocations: (locations: any[]) => void;
+  locations:Location[];
+  setLocations: (locations: Location[]) => void;
 }
 
 const useGlobalStore = create<GlobalStore>((set) => ({

@@ -13,7 +13,6 @@ function getLocation(lat: number, lng: number) {
   geocoder.geocode({ location: latlng }, function (results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       const location = getAddressComponents(results);
-      console.log(location);
       location.lat = lat;
       location.long = lng;
       location.timestamp = new Date().getTime();

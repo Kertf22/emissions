@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Spinner from "./components/spinner";
 import "./App.css";
@@ -11,7 +11,7 @@ import { Register } from "./components/Register";
 import useGlobalStore from "./infra/store";
 import { useUser } from "./hooks/useUser";
 import Header from "./Header";
-import { useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import useLocation from "./hooks/useLocation";
 import { Button } from "./components/button";
 import { WarningCircle } from "@phosphor-icons/react";
@@ -32,28 +32,26 @@ export interface User {
   username: string;
 }
 
-// const containerStyle = {
-//   width: "600px",
-//   height: "400px",
-//   marginTop: "30px",
-//   border: "2px solid black",
-//   borderRadius: "12px"
-// };
+const containerStyle = {
+  maxWidth: "90vw",
+  width: "100%",
+  height: "500px",
+  marginTop: "30px",
+  border: "2px solid black",
+  borderRadius: "12px"
+};
 
 function App() {
 
   const { loading, data, setData, locations, setLocations } = useGlobalStore();
 
-
   useEffect(() => {
     const fetchData = async () => {
-    const locations = await getLocations();
-    setLocations(locations)
-  }
-  fetchData();
-  },[])
-  
-
+      const locations = await getLocations();
+      setLocations(locations)
+    }
+    fetchData();
+  }, [])
 
   const handleClose = () => setData(null)
 
@@ -65,6 +63,28 @@ function App() {
   });
 
   useLocation(isLoaded);
+
+  const [_, setMap] = useState(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onLoad = useCallback(function callback(map: any) {
+    new window.google.maps.LatLngBounds();
+    for (const location of locations) {
+      new window.google.maps.Marker({
+        position: { lat: location?.lat, lng: location?.long },
+        map,
+
+        title: location?.city,
+      });
+    }
+
+    setMap(map);
+  }, [locations]);
+
+  const onUnmount = useCallback(function callback() {
+    setMap(null);
+  }, []);
+  const center = locations.length > 0 ? { lat: locations[0]?.lat, lng: locations[0]?.long } : { lat: 0, lng: 0 };
 
   return (
     <>
@@ -112,7 +132,28 @@ function App() {
             })}
           </tbody>
         </Table>
+
+        {isLoaded && locations.length > 0 ? (
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            // center={{
+            //   lat: +location?.coords.latitude,
+            //   lng: +location?.coords.longitude
+            // }}
+            zoom={2}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+          >
+            {/* Child components, such as markers, info windows, etc. */}
+            <></>
+          </GoogleMap>
+        ) : (
+          <></>
+        )}
       </div>
+
+
       {
         data && (
           <Modal open={!!data} closeModal={handleClose}>
