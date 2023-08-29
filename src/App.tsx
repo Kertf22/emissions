@@ -110,28 +110,7 @@ function App() {
           Acessos ao portal
         </p>
 
-        <Table striped bordered hover variant="dark" style={{ width: "80%" }}>
-          <thead>
-            <tr>
-              <th>País</th>
-              <th>Estado</th>
-              <th>Cidade</th>
-              <th>Acessos</th>
-            </tr>
-          </thead>
-          <tbody>
-            {locations.map((location) => {
-              return (
-                <tr key={location.id}>
-                  <td>{location.country}</td>
-                  <td>{location.state}</td>
-                  <td>{location.city}</td>
-                  <td>{location._count.city}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+
 
         {isLoaded && locations.length > 0 ? (
           <GoogleMap
