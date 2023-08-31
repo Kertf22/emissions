@@ -7,7 +7,7 @@ const manifestForPwa: Partial<VitePWAOptions> = {
   manifest: {
     theme_color: "#edebe9",
     background_color: "#e8e6e5",
-    display: "browser",
+    display: "fullscreen",
     scope: "/",
     start_url: "/",
     name: "Emissions",
