@@ -6,6 +6,14 @@
     height: 100%;
 }
 
+
+body {
+  background: fixed;
+  background-image: url('/assets/bg-f8163d91.webp');
+  background-size: cover;
+}
+
+
 .spinner-border {
     display: block;
     position: fixed;

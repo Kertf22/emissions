@@ -87,13 +87,7 @@ function App() {
 
   return (
     <>
-      <img src={co2}
-        style={{
-          position: "fixed",
-          zIndex: -1,
-          opacity: 0.9,
-        }}
-      />
+
 
       <Header logOut={logOut} />
 
