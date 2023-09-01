@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Spinner from "./components/spinner";
 import "./App.css";
-import co2 from "./assets/bg.webp"
 import { MdOutlineCo2 } from "react-icons/md";
 import { Questions } from "./Questions";
 import { Login } from "./components/Login";
