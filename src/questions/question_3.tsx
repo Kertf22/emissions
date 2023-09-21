@@ -21,7 +21,8 @@ export const Question_3 = () => {
             setLoading(true);
             return await getMostCommonFonts(Number(form.quant));
         },
-        cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+            staleTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+    cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
         onSuccess: (data) => {
             debugger;
             if (data.length === 0) {

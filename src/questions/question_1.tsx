@@ -22,7 +22,8 @@ const Question_1 = () => {
             setLoading(true);
             return await getCountrybyYear(q1Form.country, Number(q1Form.year));
         },
-        cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+            staleTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+    cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
         onSuccess: (data) => {
             if (data.length === 0) {
                 setData({

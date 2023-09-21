@@ -21,7 +21,8 @@ const Question_2 = () => {
             setLoading(true);
             return await getCountryInfo(form.country);
         },
-        cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+            staleTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+    cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
         onSuccess: (data) => {
             if (data.length === 0) {
                 setData({

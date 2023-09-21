@@ -24,7 +24,8 @@ export const Register = ({ onComplete, close }: LoginProps) => {
             const { data } = await api.post<{ user: User, token: string }>("/login", form);
             return data;
         },
-        cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+            staleTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+    cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
         onSuccess: (data) => {
             onComplete(data.user, data.token);
             close();

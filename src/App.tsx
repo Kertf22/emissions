@@ -49,6 +49,7 @@ function App() {
   const {} = useQuery({
     queryKey: "locations",
     queryFn: getLocations,
+        staleTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
     cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
     onSuccess: (data) => {
       setLocations(data)
@@ -61,6 +62,7 @@ function App() {
     queryFn: async () => {
       return await getCountries();
     },
+    staleTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
     cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
     onSuccess: (data) => {
       setCountries(data)
