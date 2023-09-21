@@ -43,7 +43,7 @@ const containerStyle = {
 
 function App() {
 
-  const { loading, data, setData, locations,setLoading, setLocations,setCountries } = useGlobalStore();
+  const { loading,user, data, setData, locations,setLoading, setLocations,setCountries } = useGlobalStore();
   
   // Queries
   const {} = useQuery({
@@ -56,26 +56,26 @@ function App() {
     }
   })
     
-  const {refetch} = useQuery({
-    queryKey: "country",
+  const {} = useQuery({
+    queryKey: ["countries", user],
     onSettled: () => setLoading(false),
     queryFn: async () => {
-      return await getCountries();
+      if(user){
+        return await getCountries();
+      }
+      throw new Error("User not logged in")
     },
     staleTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
     cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
     onSuccess: (data) => {
       setCountries(data)
     },
-    enabled: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+
   })
 
   const handleClose = () => setData(null)
 
-  const { signIn, logOut } = useUser(() => refetch());
+  const { signIn, logOut } = useUser();
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",

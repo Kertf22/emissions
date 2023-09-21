@@ -4,24 +4,22 @@ import { User } from "../App";
 import api from "../infra/services/api";
 import decode from "jwt-decode";
 
-export const useUser = (fetchCountries:() => void) => {
+export const useUser = () => {
 
 
 
-    const { setCountries, setUser } = useGlobalStore();
+    const { setUser } = useGlobalStore();
 
     const signIn = (user: User, token: string) => {
         setUser({ ...user });
         localStorage.setItem("token", token);
         api.defaults.headers.Authorization = `Bearer ${token}`;
-        fetchCountries();
     };
 
     const logOut = () => {
         setUser(null);
         localStorage.removeItem("token");
         api.defaults.headers.Authorization = ``;
-        setCountries([]);
     };
 
     useEffect(() => {
@@ -33,7 +31,6 @@ export const useUser = (fetchCountries:() => void) => {
                 if (user) {
                     setUser(user);
                     api.defaults.headers.Authorization = `Bearer ${token}`;
-                    fetchCountries();
                 } else {
                     throw new Error("Invalid token");
                 }
