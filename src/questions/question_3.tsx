@@ -24,7 +24,6 @@ export const Question_3 = () => {
             staleTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
     cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
         onSuccess: (data) => {
-            debugger;
             if (data.length === 0) {
                 setData({
                     value: null,
