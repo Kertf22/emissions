@@ -25,6 +25,7 @@ import { Q8 } from "./components/charts/Q8";
 import { Q9 } from "./components/charts/Q9";
 import { getLocations } from "./infra/actions/getLocations";
 import { useQuery } from "react-query";
+import { getCountries } from "./infra/actions/getCountries";
 
 export interface User {
   id: string;
@@ -42,7 +43,7 @@ const containerStyle = {
 
 function App() {
 
-  const { loading, data, setData, locations, setLocations } = useGlobalStore();
+  const { loading, data, setData, locations,setLoading, setLocations,setCountries } = useGlobalStore();
   
   // Queries
   const {} = useQuery({
@@ -53,10 +54,26 @@ function App() {
       setLocations(data)
     }
   })
+    
+  const {refetch} = useQuery({
+    queryKey: "country",
+    onSettled: () => setLoading(false),
+    queryFn: async () => {
+      return await getCountries();
+    },
+    cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+    onSuccess: (data) => {
+      setCountries(data)
+    },
+    enabled: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   const handleClose = () => setData(null)
 
-  const { signIn, logOut } = useUser();
+  const { signIn, logOut } = useUser(() => refetch());
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",

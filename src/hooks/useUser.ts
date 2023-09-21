@@ -2,18 +2,13 @@ import { useEffect } from "react";
 import useGlobalStore from "../infra/store";
 import { User } from "../App";
 import api from "../infra/services/api";
-import { getCountries } from "../infra/actions/getCountries";
 import decode from "jwt-decode";
-export const useUser = () => {
 
-    const fetchCountries = async () => {
-        setLoading(true);
-        const data = await getCountries();
-        setCountries(data);
-        setLoading(false);
-    };
+export const useUser = (fetchCountries:() => void) => {
 
-    const { setCountries, setLoading, setUser } = useGlobalStore();
+
+
+    const { setCountries, setUser } = useGlobalStore();
 
     const signIn = (user: User, token: string) => {
         setUser({ ...user });
