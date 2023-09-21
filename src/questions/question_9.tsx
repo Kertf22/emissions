@@ -4,31 +4,53 @@ import { Select } from "../components/select";
 import { getCountrybyYear } from "../infra/actions/getCountryByYear";
 import useGlobalStore from "../infra/store";
 import { Button } from "../components/button";
+import { useQuery } from "react-query";
 
 const Question_9 = () => {
     const { loading, years, setData, setLoading } = useGlobalStore();
+    
     const [form, setForm] = useState({
         year: "",
     })
 
-    const handleQ9 = async () => {
-        setLoading(true);
-        try {
-            const data_1 = await getCountrybyYear("Global", Number(form.year) - 1);
-            if (data_1.length === 0) throw Error("Error")
-            const data_2 = await getCountrybyYear("Global", Number(form.year));
-            if (data_2.length === 0) throw Error("Error")
+    const { refetch } = useQuery({
+        queryKey: "questions8",
+        onSettled: () => setLoading(false),
+        queryFn: async () => {
+          setLoading(true);
+          return Promise.all([
+           getCountrybyYear("Global", Number(form.year) - 1),
+              getCountrybyYear("Global", Number(form.year)),
+          ])
+        },
+        cacheTime: 1000 * 60 * 60 * 24 * 14, // 2 weeks
+        onSuccess: ([data_1,data_2]) => {
+            if (data_1.length === 0 || data_2.length === 0) {
+            setData({
+              value: null,
+              type: "error",
+            });
+          } else {
             setData({
                 value: [data_1[0], data_2[0]],
                 type: "9",
             });
-        } catch (err) {
-            setData({
-                type: "error",
-                value: null
-            });
-        }
-        setLoading(false);
+          }
+        },
+        onError: () => {
+          setData({
+            value: null,
+            type: "error",
+          });
+        },
+        enabled: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+      });
+
+    const handleQ9 = async () => {
+        refetch();
     }
 
     return (

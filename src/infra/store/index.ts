@@ -7,7 +7,7 @@ interface Data {
   type: string | "error" | "login" | "register";
 }
 
-interface Location {
+export interface Location {
   id: number
   lat: number
   long: number
@@ -41,7 +41,7 @@ interface GlobalStore {
   setData: (data: Data) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  locations:Location[];
+  locations: Location[];
   setLocations: (locations: Location[]) => void;
 }
 

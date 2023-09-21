@@ -4,6 +4,7 @@ import { useState } from "react"
 import api from "../infra/services/api";
 import useGlobalStore from "../infra/store";
 import { User } from "../App";
+import { useQuery } from "react-query";
 
 
 export const Register = ({ onComplete, close }: LoginProps) => {
@@ -13,6 +14,30 @@ export const Register = ({ onComplete, close }: LoginProps) => {
         username: '',
         password: '',
     });
+
+    const {refetch} = useQuery({
+        queryKey: "register",
+        onSettled: () => setLoading(false),
+        queryFn: async () => {
+            setLoading(true);
+            await api.post<{ user: User }>("/register", form)
+            const { data } = await api.post<{ user: User, token: string }>("/login", form);
+            return data;
+        },
+        cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+        onSuccess: (data) => {
+            onComplete(data.user, data.token);
+            close();
+        },
+        onError: () => {
+            setError("Erro ao registrar, tente novamente mais tarde.");
+        },
+        enabled: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+    })
+
 
     const [error, setError] = useState(null)
 
@@ -33,20 +58,7 @@ export const Register = ({ onComplete, close }: LoginProps) => {
             setError("Preencha todos os campos do formulario.");
             return;
         }
-
-        close();
-        setLoading(true);
-        try {
-            const { data } = await api.post<{ user: User }>("/register", form)
-            const { data: { token } } = await api.post<{ user: User, token: string }>("/login", form);
-            onComplete(data.user, token);
-            close();
-
-        } catch (err) {
-            setError("Erro ao logar, tente novamente mais tarde.");
-        }
-
-        setLoading(false);
+        refetch()
     }
 
     return (

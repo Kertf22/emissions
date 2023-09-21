@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Spinner from "./components/spinner";
 import "./App.css";
@@ -24,6 +24,7 @@ import { Q7 } from "./components/charts/Q7";
 import { Q8 } from "./components/charts/Q8";
 import { Q9 } from "./components/charts/Q9";
 import { getLocations } from "./infra/actions/getLocations";
+import { useQuery } from "react-query";
 
 export interface User {
   id: string;
@@ -42,14 +43,16 @@ const containerStyle = {
 function App() {
 
   const { loading, data, setData, locations, setLocations } = useGlobalStore();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const locations = await getLocations();
-      setLocations(locations)
+  
+  // Queries
+  const {} = useQuery({
+    queryKey: "locations",
+    queryFn: getLocations,
+    cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+    onSuccess: (data) => {
+      setLocations(data)
     }
-    fetchData();
-  }, [])
+  })
 
   const handleClose = () => setData(null)
 
@@ -82,6 +85,7 @@ function App() {
   const onUnmount = useCallback(function callback() {
     setMap(null);
   }, []);
+
   const center = locations.length > 0 ? { lat: locations[0]?.lat, lng: locations[0]?.long } : { lat: 0, lng: 0 };
 
   return (

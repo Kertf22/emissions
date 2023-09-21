@@ -1,3 +1,4 @@
+import { useQuery } from "react-query";
 import { Button } from "../components/button";
 import { Card } from "../components/card";
 import { Select } from "../components/select";
@@ -13,23 +14,41 @@ export const Question_3 = () => {
         quant: "",
     });
     
-    const handleQuestion = async () => {
-        setLoading(true);
-
-        try {
-            const data = await getMostCommonFonts(Number(form.quant));
-            if (data.length === 0) throw Error("Error");
+    const {refetch} = useQuery({
+        queryKey: "questions3",
+        onSettled: () => setLoading(false),
+        queryFn: async () => {
+            setLoading(true);
+            return await getMostCommonFonts(Number(form.quant));
+        },
+        cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+        onSuccess: (data) => {
+            debugger;
+            if (data.length === 0) {
+                setData({
+                    value: null,
+                    type: "error",
+                });
+            } else {
+                setData({
+                    value: data,
+                    type: "1",
+                });
+            }
+        },
+        onError: () => {
             setData({
-                value: data,
-                type: "3"
-            });
-        } catch (err) {
-            setData({
+                value: null,
                 type: "error",
-                value: null
-            })
-        }
-        setLoading(false);
+            });
+        },
+        enabled: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+    })
+    const handleQuestion = async () => {
+        refetch()
     }
 
     return (

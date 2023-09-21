@@ -3,6 +3,7 @@ import { Button } from "./button"
 import { useState } from "react"
 import api from "../infra/services/api";
 import useGlobalStore from "../infra/store";
+import { useQuery } from "react-query";
 
 export interface LoginProps {
     onComplete: (user: User, token: string) => void
@@ -17,6 +18,29 @@ export const Login = ({ onComplete, close }: LoginProps) => {
         username: '',
         password: '',
     });
+
+
+    const {refetch} = useQuery({
+        queryKey: "login",
+        onSettled: () => setLoading(false),
+        queryFn: async () => {
+            setLoading(true);
+            const { data } = await api.post<{ user: User, token: string }>("/login", form);
+            return data;
+        },
+        cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+        onSuccess: (data) => {
+            onComplete(data.user, data.token);
+            close();
+        },
+        onError: () => {
+            setError("Erro ao logar, tente novamente mais tarde.");
+        },
+        enabled: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+    })
 
     const [error, setError] = useState(null)
 
@@ -37,17 +61,7 @@ export const Login = ({ onComplete, close }: LoginProps) => {
             return;
         }
 
-        setLoading(true);
-        try {
-            const { data } = await api.post<{ user: User, token: string }>("/login", form);
-            onComplete(data.user, data.token);
-            close();
-
-        } catch (err) {
-            setError("Erro ao logar, tente novamente mais tarde.");
-        }
-
-        setLoading(false)
+        refetch()
     };
 
 

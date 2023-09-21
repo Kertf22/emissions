@@ -4,6 +4,7 @@ import { Card } from "../components/card";
 import useGlobalStore from "../infra/store";
 import { getCountrybyYear } from "../infra/actions/getCountryByYear";
 import { Button } from "../components/button";
+import { useQuery } from "react-query";
 
 const Question_1 = () => {
 
@@ -13,23 +14,41 @@ const Question_1 = () => {
         country: "",
         year: "",
     });
-
-    const handleQuestion = async () => {
-        setLoading(true);
-        try {
-            const data = await getCountrybyYear(q1Form.country, Number(q1Form.year));
-            if (data.length === 0) throw Error("Error")
-            setData({
-                value: [data[0]],
-                type: "1",
-            });
-        } catch (err) {
+  // Queries
+    const {refetch} = useQuery({
+        queryKey: "questions1",
+        onSettled: () => setLoading(false),
+        queryFn: async () => {
+            setLoading(true);
+            return await getCountrybyYear(q1Form.country, Number(q1Form.year));
+        },
+        cacheTime: 1000 * 60 * 60 * 24 * 14 , // 2 weeks
+        onSuccess: (data) => {
+            if (data.length === 0) {
+                setData({
+                    value: null,
+                    type: "error",
+                });
+            } else {
+                setData({
+                    value: [data[0]],
+                    type: "1",
+                });
+            }
+        },
+        onError: () => {
             setData({
                 value: null,
                 type: "error",
             });
-        }
-        setLoading(false);
+        },
+        enabled: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+    })
+    const handleQuestion = async () => {
+        refetch()
     };
     return (
         <>

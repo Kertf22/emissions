@@ -4,6 +4,7 @@ import { useState } from "react";
 import useGlobalStore from "../infra/store";
 import { getAverageEmissionsByCountryAndYear } from "../infra/actions/getAverageEmissionsByCountryAndYear";
 import { Button } from "../components/button";
+import { useQuery } from "react-query";
 
 const Question_8 = () => {
     const { loading, countries, years, setData, setLoading } = useGlobalStore();
@@ -13,12 +14,21 @@ const Question_8 = () => {
         country: ""
     })
 
-    const handleQ8 = async () => {
-        setLoading(true);
-        try {
-            const data = await getAverageEmissionsByCountryAndYear(form.country, 2023 - Number(form.year));
-
-            if (data.length === 0 || data[0].media_emissao === 0) { throw new Error("error") }
+    const { refetch } = useQuery({
+        queryKey: "questions8",
+        onSettled: () => setLoading(false),
+        queryFn: async () => {
+          setLoading(true);
+          return await getAverageEmissionsByCountryAndYear(form.country, 2023 - Number(form.year));
+        },
+        cacheTime: 1000 * 60 * 60 * 24 * 14, // 2 weeks
+        onSuccess: (data) => {
+          if (data.length === 0 || data[0].media_emissao === 0) {
+            setData({
+              value: null,
+              type: "error",
+            });
+          } else {
             setData({
                 value: {
                     media_emissao: data[0].media_emissao,
@@ -26,13 +36,22 @@ const Question_8 = () => {
                 },
                 type: "8"
             })
-        } catch (err) {
-            setData({
-                type: "error",
-                value: null
-            })
-        }
-        setLoading(false);
+          }
+        },
+        onError: () => {
+          setData({
+            value: null,
+            type: "error",
+          });
+        },
+        enabled: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+      });
+
+    const handleQ8 = async () => {
+        refetch()
     }
     return (
         <Card>
